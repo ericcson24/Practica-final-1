@@ -19,7 +19,7 @@ async function search(endpoint:string): Promise<Character[]> {
 }
 
 export async function GetAllCharacters():Promise<Character[]> {
-    return search(`/characters`)
+    return search(`/character`)
 }
 
 export async function GetCharacterByID(id:string) {

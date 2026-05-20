@@ -3,23 +3,36 @@
 import CharacterCard from "@/components/CharacterCard";
 import { GetAllCharacters, GetCharacterByName } from "@/lib/api";
 import { Character } from "@/lib/types";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function Home() {
-    const [Character,setCharacter]= useState<Character[]>([]);
+    const [characters, setCharacters] = useState<Character[]>([]);
     const [busqueda, setbusqueda] = useState("");
     const [error, setError] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(true);
     const [search, setSearch] = useState<boolean>(false)
 
     async function fetchCharacters () {
-        const query= busqueda.trim()
-        const data = query
-          ? await GetCharacterByName(query)
-          : await GetAllCharacters();
+        try {
+            setLoading(true);
+            setError("");
+            const query = busqueda.trim();
+            const data = query
+              ? await GetCharacterByName(query)
+              : await GetAllCharacters();
 
-        setCharacter(data);
+            setCharacters(data);
+        } catch {
+            setError("No se pudieron cargar los personajes.");
+            setCharacters([]);
+        } finally {
+            setLoading(false);
+        }
     }
+
+    useEffect(() => {
+        fetchCharacters();
+    }, []);
 
     return(
     <div>
@@ -32,7 +45,11 @@ export default function Home() {
 
         <div>
             <section>
-                {Character.map((character)=>(<CharacterCard key={character.id} character={character}/>))}
+                {loading && <p>Cargando personajes...</p>}
+                {!loading && error && <p>{error}</p>}
+                {!loading && !error && characters.map((character) => (
+                    <CharacterCard key={character.id} character={character} />
+                ))}
             </section>
         </div>
 
