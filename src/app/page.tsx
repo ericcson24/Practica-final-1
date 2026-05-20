@@ -8,15 +8,23 @@ import Link from "next/link";
 import "./styles.css";
 
 export default function Home() {
+    // Lista de personajes cargados de la API
     const [characters, setCharacters] = useState<Character[]>([]);
+    // Texto del input de búsqueda
     const [busqueda, setbusqueda] = useState("");
+    // Mensaje de error si falla la petición
     const [error, setError] = useState<string>("");
+    // Controla si se está cargando
     const [loading, setLoading] = useState<boolean>(true);
+    // Togglear este valor dispara el useEffect (patrón búsqueda por botón)
     const [search, setSearch] = useState<boolean>(false);
+    // Página actual de la paginación
     const [currentPage, setCurrentPage] = useState<number>(1);
+    // Total de páginas devuelto por la API
     const [totalPages, setTotalPages] = useState<number>(1);
 
     useEffect(() => {
+        // Flag para evitar actualizar estado si el componente se desmonta
         let isMounted = true;
 
         const fetchCharacters = async () => {
@@ -25,13 +33,14 @@ export default function Home() {
 
             try {
                 const query = busqueda.trim();
+                // Si hay búsqueda usa el endpoint por nombre, si no trae todos
                 const data = query
                     ? await GetCharacterByName(query, currentPage)
                     : await GetAllCharacters(currentPage);
 
                 if (isMounted) {
                     setCharacters(data.results ?? []);
-                    setTotalPages(data.info?.pages ?? 1);
+                    setTotalPages(data.info?.pages ?? 1); // total de páginas de la API
                 }
             } catch {
                 if (isMounted) {
@@ -46,21 +55,25 @@ export default function Home() {
             }
         };
 
+        // Debounce de 350ms para no disparar la petición en cada render
         const timeout = setTimeout(fetchCharacters, 350);
 
+        // Cleanup: cancela el timeout y marca el componente como desmontado
         return () => {
             isMounted = false;
             clearTimeout(timeout);
         };
-    }, [search, currentPage]);
+    }, [search, currentPage]); // se ejecuta al buscar o cambiar de página
 
     return(
     <main className="home">
+        {/* Botón fijo arriba a la derecha para ir a favoritos */}
         <Link href="/favoritos" className="cornerButton">Favoritos</Link>
         <header className="homeHeader">
             <h1>Rick y Morti API</h1>
             <p>Explora personajes del multiverso.</p>
         </header>
+        {/* Buscador: al pulsar Buscar resetea a pág 1 y togglea search */}
         <div className="searchForm">
             <input
                 type="text"
@@ -70,8 +83,10 @@ export default function Home() {
                 className="searchInput"
             />
             <button className="searchButton" onClick={() => { setCurrentPage(1); setSearch((prev) => !prev); }}>Buscar</button>
+            {/* Limpiar vacía el input y vuelve a la página 1 con todos */}
             <button className="clearButton" onClick={() => { setbusqueda(""); setCurrentPage(1); setSearch((prev) => !prev); }}>Limpiar</button>
         </div>
+        {/* Controles de paginación: deshabilitados en los extremos o mientras carga */}
         <div className="pagination">
             <button
                 className="searchButton"
@@ -94,6 +109,7 @@ export default function Home() {
         </div>
 
         <section className="charactersSection">
+                {/* Estados de carga, error y lista de personajes */}
                 {loading && <p className="statusText">Cargando personajes...</p>}
                 {!loading && error && <p className="statusText errorText">{error}</p>}
                 {!loading && !error && characters.map((character) => (

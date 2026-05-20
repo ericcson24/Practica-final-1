@@ -10,10 +10,12 @@ type CharacterProps = {
 }
 
 export default function CharacterCard({ character }: CharacterProps) {
+    // Extraemos la lista y las funciones del contexto de favoritos
     const { favCharactersList, favCharactersListPush, favCharactersListPop } = useCharacter();
 
     return (
         <div className="albumCard">
+            {/* Imagen + botón de favorito dentro del Link para ir al detalle */}
             <Link href={`/character/${character.id}`}>
                 <div className="imagenCard">
                     <img
@@ -21,6 +23,7 @@ export default function CharacterCard({ character }: CharacterProps) {
                         alt={`Foto de ${character.name}`}
                         className="Imagen"
                     />
+                    {/* preventDefault + stopPropagation para no navegar al hacer clic en el botón */}
                     {!favCharactersList.some((i) => i.id === character.id) ? (
                         <button
                             onClick={(e) => {
@@ -45,6 +48,7 @@ export default function CharacterCard({ character }: CharacterProps) {
                 </div>
             </Link>
 
+            {/* Nombre del personaje como enlace al detalle */}
             <Link href={`/character/${character.id}`}>
                 <div className="TituloCard">
                     <h1>{character.name}</h1>
