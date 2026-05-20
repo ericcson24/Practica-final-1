@@ -1,0 +1,43 @@
+.albumCard {
+    display: flex;
+    flex-direction: row;
+    width: 20%;
+    height: auto;
+    padding: 1%;
+    justify-content: flex-start;
+    align-items: flex-start;
+    background-color: #faebd7;
+    gap: 3%;
+
+    button {
+        cursor: pointer;
+        text-decoration: none;
+    }
+}
+
+a {
+    margin-top: 0;
+    text-decoration: none;
+    color: rgb(20, 20, 20);
+}
+
+.albumCard:hover {
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.imagenCard {
+    display: flex;
+    flex-direction: column;
+    max-width: 100em;
+    max-height: 100em;
+    gap: 10px;
+
+}
+
+.TituloCard {
+    h1 {
+        font-family: Arial;
+        font-size: large;
+        max-width: 100%;
+    }
+}
