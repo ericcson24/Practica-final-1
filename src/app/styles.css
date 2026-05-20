@@ -1,18 +1,67 @@
 .home {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  div {
-    a {
-      padding: 2px;
-    }
-  }
+  min-height: 100vh;
+  padding: 2rem 1rem 3rem;
+  background: linear-gradient(180deg, #f5fffb 0%, #eaf6ff 55%, #e7fff1 100%);
 }
 
-.grid {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+.homeHeader {
+  max-width: 1100px;
+  margin: 0 auto 1.5rem;
+  text-align: center;
+}
+
+.homeHeader h1 {
+  margin: 0;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  color: #0f172a;
+}
+
+.homeHeader p {
+  margin-top: 0.55rem;
+  color: #334155;
+}
+
+.sectionTitle {
+  max-width: 1100px;
+  margin: 0 auto 0.75rem;
+}
+
+.sectionTitle h2 {
+  margin: 0;
+  color: #0f172a;
+}
+
+.charactersSection {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
   gap: 1rem;
+}
+
+.statusText {
+  grid-column: 1 / -1;
+  margin: 0.5rem 0;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  background-color: #f1f5f9;
+  color: #334155;
+}
+
+.errorText {
+  background-color: #fee2e2;
+  color: #991b1b;
+}
+
+.charactersSection > div {
+  border: 1px solid #dbeafe;
+  border-radius: 12px;
+  padding: 0.5rem;
+  background: #ffffff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.charactersSection > div:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.1);
 }

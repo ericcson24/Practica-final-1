@@ -4,6 +4,7 @@ import CharacterCard from "@/components/CharacterCard";
 import { GetAllCharacters, GetCharacterByName } from "@/lib/api";
 import { Character } from "@/lib/types";
 import { useEffect, useState } from "react";
+import "./styles.css";
 
 export default function Home() {
     const [characters, setCharacters] = useState<Character[]>([]);
@@ -35,25 +36,23 @@ export default function Home() {
     }, []);
 
     return(
-    <div>
-        <div>
+    <main className="home">
+        <header className="homeHeader">
             <h1>Rick y Morti API</h1>
-        </div>
-        <div>
-            <h2>Characters:</h2>
+            <p>Explora personajes del multiverso.</p>
+        </header>
+        <div className="sectionTitle">
+            <h2>Characters</h2>
         </div>
 
-        <div>
-            <section>
-                {loading && <p>Cargando personajes...</p>}
-                {!loading && error && <p>{error}</p>}
+        <section className="charactersSection">
+                {loading && <p className="statusText">Cargando personajes...</p>}
+                {!loading && error && <p className="statusText errorText">{error}</p>}
                 {!loading && !error && characters.map((character) => (
                     <CharacterCard key={character.id} character={character} />
                 ))}
-            </section>
-        </div>
-
-    </div>
+        </section>
+    </main>
     )
 
 }
