@@ -32,7 +32,7 @@ export default function Home() {
 
         <div>
             <section>
-                (character.map((character)=>()))
+                {Character.map((character)=>(<CharacterCard key={character.id} character={character}/>))}
             </section>
         </div>
 
