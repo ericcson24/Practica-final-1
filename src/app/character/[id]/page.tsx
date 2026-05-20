@@ -3,51 +3,53 @@
 import { GetCharacterByID } from "@/lib/api";
 import { Character } from "@/lib/types";
 import { useEffect, useState } from "react";
+import { useParams } from "next/navigation";
+import CharacterCardDetail from "@/components/CharacterCardDetail";
+import Link from "next/link";
+import "../../styles.css";
 
-
-export default function CharacterPage({ params }: { params: { id: string } }) {
+export default function CharacterPage() {
+    const params = useParams<{ id: string }>();
+    const id = params?.id;
     const [character, setCharacter] = useState<Character | null>(null);
-    const [error, setError] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(true);
+    const [error, setError] = useState<string>("");
 
     useEffect(() => {
-        const fetchCharacter = async () => {
-            setLoading(true);
-            setError("");
+        async function fetchCharacter() {
+            if (!id) {
+                setError("ID de personaje invalido.");
+                setCharacter(null);
+                setLoading(false);
+                return;
+            }
+
             try {
-                const data = await GetCharacterByID(params.id);
-                setCharacter(data[0] || null);
-            } catch (err) {
-                setError("Failed to fetch character.");
+                setLoading(true);
+                setError("");
+                const data = await GetCharacterByID(id);
+                setCharacter(data);
+            } catch {
+                setError("No se pudo cargar el personaje.");
+                setCharacter(null);
             } finally {
                 setLoading(false);
             }
-        };
+        }
 
         fetchCharacter();
-    }, [params.id]);
-
-    if (loading) {
-        return <div className="statusText">Loading...</div>;
-    }
-
-    if (error) {
-        return <div className="statusText errorText">{error}</div>;
-    }
-
-    if (!character) {
-        return <div className="statusText">Character not found.</div>;
-    }
+    }, [id]);
 
     return (
-        <div className="charactersSection">
-            <div>
-                <h2>{character.name}</h2>
-                <p>Status: {character.status}</p>
-            </div>
-            <div>
-                <img src={character.image} alt={character.name} className="characterImage" />
-            </div>
-        </div>
+        <main className="home">
+            <Link href="/" className="cornerButton">Volver</Link>
+            {loading && <p className="statusText">Cargando detalles...</p>}
+            {!loading && error && <p className="statusText errorText">{error}</p>}
+            {!loading && !error && character && (
+                <section>
+                    <CharacterCardDetail character={character} />
+                </section>
+            )}
+        </main>
     );
 }

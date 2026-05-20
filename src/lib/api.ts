@@ -7,10 +7,10 @@ const api = axios.create({
     timeout: 10000
 });
 
-async function search(endpoint:string): Promise<Character[]> {
+async function search(endpoint:string): Promise<CharacterResponse> {
     try {
         const response = await api.get <CharacterResponse>(endpoint)
-        return response.data.results ?? []
+        return response.data
     }catch (error) {
         console.error("Error fetching data:", error);
         throw error;
@@ -18,22 +18,32 @@ async function search(endpoint:string): Promise<Character[]> {
     
 }
 
-export async function GetAllCharacters():Promise<Character[]> {
-    return search(`/character`)
+async function searchOne(endpoint: string): Promise<Character> {
+    try {
+        const response = await api.get<Character>(endpoint);
+        return response.data;
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        throw error;
+    }
 }
 
-export async function GetCharacterByID(id:string) {
+export async function GetAllCharacters(page = 1):Promise<CharacterResponse> {
+    return search(`/character?page=${page}`)
+}
+
+export async function GetCharacterByID(id:string): Promise<Character> {
     try{
-    return search(`/character/${id}`)
+    return searchOne(`/character/${id}`)
     }catch (error) {
         console.error("Error fetching data:", error);
         throw error;
     }
 }
 
-export async function GetCharacterByName(name:string) {
+export async function GetCharacterByName(name:string, page = 1): Promise<CharacterResponse> {
     try{
-    return search(`/character/?name=${name}`)
+    return search(`/character/?name=${name}&page=${page}`)
     }catch (error) {
         console.error("Error fetching data:", error);
         throw error;

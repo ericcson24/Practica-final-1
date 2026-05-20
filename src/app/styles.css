@@ -2,6 +2,21 @@
   min-height: 100vh;
   padding: 2rem 1rem 3rem;
   background: linear-gradient(180deg, #f5fffb 0%, #eaf6ff 55%, #e7fff1 100%);
+  position: relative;
+}
+
+.cornerButton {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 20;
+  background: #0f172a;
+  color: #ffffff;
+  text-decoration: none;
+  border-radius: 999px;
+  padding: 0.55rem 0.95rem;
+  font-weight: 600;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.18);
 }
 
 .homeHeader {
@@ -19,6 +34,49 @@
 .homeHeader p {
   margin-top: 0.55rem;
   color: #334155;
+}
+
+.searchForm {
+  max-width: 1100px;
+  margin: 0 auto 1rem;
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.searchInput {
+  flex: 1;
+  min-width: 220px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 0.7rem 0.85rem;
+  background: #ffffff;
+  color: #0f172a;
+}
+
+.searchButton,
+.clearButton {
+  border: 0;
+  border-radius: 10px;
+  padding: 0.7rem 1rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.searchButton {
+  background: #0ea5e9;
+  color: #ffffff;
+}
+
+.searchButton:disabled,
+.clearButton:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.clearButton {
+  background: #e2e8f0;
+  color: #0f172a;
 }
 
 .sectionTitle {
@@ -64,4 +122,30 @@
 .charactersSection > div:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(15, 23, 42, 0.1);
+}
+
+.resultados {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.pagination {
+  max-width: 1100px;
+  margin: 0 auto 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+}
+
+.pageInfo {
+  color: #0f172a;
+  font-weight: 600;
 }
